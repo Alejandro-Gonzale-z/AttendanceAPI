@@ -48,7 +48,7 @@ export async function getTeacherID(id) {
     `
         SELECT * 
         FROM teachers 
-        WHERE id = ?`,
+        WHERE teacher_id = ?`,
     [id]
   );
   return result;
@@ -58,8 +58,8 @@ export async function getTeacherID(id) {
 export async function getTeachersClasses(id) {
   const [result] = await pool.query(
     `SELECT * 
-        FROM class 
-        WHERE teacher_id = ?
+    FROM class 
+    WHERE teacher_id = ?
     `,
     [id]
   );
@@ -75,18 +75,6 @@ export async function getClass(id) {
         WHERE class_id = ?
     `,
     [id]
-  );
-  return result;
-}
-
-export async function getTeacherClasses(teacher_id) {
-  const [result] = await pool.query(
-    `
-        SELECT * 
-        FROM class
-        WHERE teacher_id = ? 
-    `,
-    [teacher_id]
   );
   return result;
 }
@@ -134,7 +122,7 @@ export async function getStudentAttendance(student_id, class_id) {
   const [result] = await pool.query(
     `
         SELECT * 
-        FROM ATTENDANCE 
+        FROM attendance 
         WHERE student_id = ? AND class_id = ?     
     `,
     [student_id, class_id]
@@ -147,65 +135,58 @@ export async function getClassAttendance(class_id) {
   const [result] = await pool.query(
     `
         SELECT *
-        FROM ATTENDANCE
+        FROM attendance
         WHERE class_id = ?    
     `,
-    [student_id, class_id]
+    [class_id]
   );
   return result;
 }
 
 //creates a teacher
 export async function createTeacher(first_name, last_name, email, password) {
-  const result = await pool.query(
+  const [result] = await pool.query(
     `
         INSERT INTO teachers (first_name, last_name, email, password)
         VALUES (?, ?, ?, ?)        
         `,
     [first_name, last_name, email, password]
   );
-  const id = result.insertId;
-  return getTeacher(id);
+  return await getTeacherID(result.insertId);
 }
 
 //create a class
 export async function createClass(class_name, teacher_id) {
-  const result = await pool.query(
+  const [result] = await pool.query(
     `
         INSERT INTO class (class_name, teacher_id)
         VALUES (?, ?)
         `,
     [class_name, teacher_id]
   );
-  const id = result.insertId;
-  return getClass(id);
+  return await getClass(result.insertId)
 }
 
 //creates student
 export async function createStudent(first_name, last_name, class_id) {
-  const result = await pool.query(
+  const [result] = await pool.query(
     `
         INSERT INTO students (first_name, last_name, class_id)
         VALUES (?, ?, ?)
         `,
     [first_name, last_name, class_id]
   );
-  const id = result.insertId;
-  return getStudent(id);
+  return await getStudent(result.insertId)
 }
 
 //creates attendance for a student
-export async function createAttendance(student_id, class_id, date, status) {
-  const result = await pool.query(
+export async function createAttendance(student_id, class_id, teacher_id, date, status) {
+  const [result] = await pool.query(
     `
-        INSERT INTO attendance (student_id,class_id,date,status)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO attendance (student_id,class_id,teacher_id,date,status)
+        VALUES (?, ?, ?, ?, ?)
         `,
-    [student_id, class_id, date, status]
+    [student_id, class_id, teacher_id, date, status]
   );
-  const id = result.insertId;
-  return getAttendance(id);
+  return await getAttendance(result.insertId)
 }
-
-const result = await getStudentsInClass(1);
-console.log(result);
