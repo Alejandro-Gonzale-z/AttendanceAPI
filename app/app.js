@@ -1,5 +1,5 @@
 import express from "express";
-
+import serverless from "serverless-http"
 import * as db from "./database.js";
 
 const app = express();
@@ -89,6 +89,9 @@ app.post("/create/attendance", async (req, res) => {
   res.status(201).send(teacher);
 });
 
+//dev only
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
+
+// module.exports.handler = serverless(app)

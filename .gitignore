@@ -1,2 +1,6 @@
-node_modules
-.env
+/app/node_modules
+/app/.env
+/rds/.terraform
+/rds/.terraform.lock.hcl
+/rds/terraform.tfstate
+/rds/terraform.tfstate.backup
