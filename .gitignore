@@ -6,3 +6,9 @@ rds/.terraform/LICENSE.txt
 /rds/terraform.tfstate
 /rds/terraform.tfstate.backup
 /budget
+/lambda/.terraform
+/lambda/.terraform.lock.hcl
+/lambda/lambda_function_payload.zip
+/lambda/terraform.tfstate
+/lambda/terraform.tfstate.backup
+/lambda/terraform.tfvars
