@@ -190,3 +190,27 @@ export async function createAttendance(student_id, class_id, teacher_id, date, s
   );
   return await getAttendance(result.insertId)
 }
+
+//deletes a teacher's class
+export async function deleteClass(class_id) {
+  const [result] = await pool.query(
+    `
+      DELETE FROM class 
+      WHERE class_id = ?
+    `,
+    [class_id]
+  );
+  return result
+}
+
+//deletes a student record
+export async function deleteStudent(student_id) {
+  const [result] = await pool.query(
+    `
+      DELETE FROM students
+      WHERE student_id = ?
+    `,
+    [student_id]
+  );
+  return result
+}

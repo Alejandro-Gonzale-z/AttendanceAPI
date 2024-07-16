@@ -1,9 +1,11 @@
 import express from "express";
+import cors from 'cors';
 import serverless from "serverless-http"
 import * as db from "./database.js";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use((err, req, res, next) => {
@@ -95,6 +97,19 @@ app.post("/create/attendance", async (req, res) => {
   const { student_id, class_id, date, status } = req.body;
   const teacher = await db.createAttendance(student_id, class_id, date, status);
   res.status(201).send(teacher);
+});
+
+//delete a class
+app.delete("/delete/class/:classId", async (req,res) => {
+  const class_id = req.params.classId;
+  const del = await db.deleteClass(class_id);
+  res.end();
+});
+
+app.delete("/delete/student/:studentId", async (req,res) => {
+  const student_id = req.params.studentId;
+  const del = await db.deleteStudent(student_id);
+  res.end();
 });
 
 //dev only
