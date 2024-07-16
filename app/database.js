@@ -214,3 +214,15 @@ export async function deleteStudent(student_id) {
   );
   return result
 }
+
+//deletes all of the students in a specific class 
+export async function deleteStudentsInClass(class_id) {
+  const [result] = await pool.query(
+    `
+      DELETE FROM students
+      WHERE class_id = ?
+    `,
+    [class_id]
+  );
+  return result
+}

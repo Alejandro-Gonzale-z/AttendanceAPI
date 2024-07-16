@@ -99,16 +99,19 @@ app.post("/create/attendance", async (req, res) => {
   res.status(201).send(teacher);
 });
 
-//delete a class
-app.delete("/delete/class/:classId", async (req,res) => {
-  const class_id = req.params.classId;
-  const del = await db.deleteClass(class_id);
-  res.end();
-});
-
+//deletes a student record according to their studentID
 app.delete("/delete/student/:studentId", async (req,res) => {
   const student_id = req.params.studentId;
   const del = await db.deleteStudent(student_id);
+  res.end();
+});
+
+//delete a class and all the students in it
+//there is no reason to store students record if they are no longer in their associated class
+app.delete("/delete/class/:classId", async (req,res) => {
+  const class_id = req.params.classId;
+  const delStudents = await db.deleteStudentsInClass(class_id);
+  const delClass = await db.deleteClass(class_id);
   res.end();
 });
 
