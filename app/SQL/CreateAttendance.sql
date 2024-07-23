@@ -7,7 +7,7 @@ CREATE TABLE attendance(
     teacher_id INTEGER,
     date DATE,
     status bool,
-    FOREIGN KEY (student_id) REFERENCES students(student_id),
-    FOREIGN KEY (class_id) REFERENCES class(class_id),  
-    FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (class_id) REFERENCES class(class_id) ON DELETE CASCADE,  
+    FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE
 );

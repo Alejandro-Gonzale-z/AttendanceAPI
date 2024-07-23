@@ -94,9 +94,9 @@ app.post("/create/student", async (req, res) => {
 
 //create an attendance record
 app.post("/create/attendance", async (req, res) => {
-  const { student_id, class_id, date, status } = req.body;
-  const teacher = await db.createAttendance(student_id, class_id, date, status);
-  res.status(201).send(teacher);
+  const { student_id, class_id, teacher_id, date, status } = req.body;
+  const attendance = await db.createAttendance(student_id, class_id, teacher_id, date, status);
+  res.status(201).send(attendance);
 });
 
 //deletes a student record according to their studentID
@@ -115,10 +115,10 @@ app.delete("/delete/class/:classId", async (req,res) => {
   res.end();
 });
 
-//dev only
-// app.listen(8080, () => {
-//   console.log("Server is running on port 8080");
-// });
+// dev only
+app.listen(8080, () => {
+  console.log("Server is running on port 8080");
+});
 
 //for lambda aws hosting
-export const handler = serverless(app)
+// export const handler = serverless(app)
