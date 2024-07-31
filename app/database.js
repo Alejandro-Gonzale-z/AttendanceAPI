@@ -143,6 +143,20 @@ export async function getClassAttendance(class_id) {
   return result;
 }
 
+export async function getClassAttendanceDate(class_id, date) {
+  const [result] = await pool.query(
+    `
+      SELECT s.student_id, s.first_name as first_name, s.last_name as last_name, a.status, a.class_id, a.teacher_id, a.date 
+      FROM attendance a
+      JOIN students s
+      ON a.student_id = s.student_id
+      WHERE a.class_id = ? AND a.date = ?
+    `,
+    [class_id, date]
+  );
+  return result;
+}
+
 //creates a teacher
 export async function createTeacher(first_name, last_name, email, password) {
   const [result] = await pool.query(
@@ -164,7 +178,7 @@ export async function createClass(class_name, teacher_id) {
         `,
     [class_name, teacher_id]
   );
-  return await getClass(result.insertId)
+  return await getClass(result.insertId);
 }
 
 //creates student
@@ -176,11 +190,17 @@ export async function createStudent(first_name, last_name, class_id) {
         `,
     [first_name, last_name, class_id]
   );
-  return await getStudent(result.insertId)
+  return await getStudent(result.insertId);
 }
 
 //creates attendance for a student
-export async function createAttendance(student_id, class_id, teacher_id, date, status) {
+export async function createAttendance(
+  student_id,
+  class_id,
+  teacher_id,
+  date,
+  status
+) {
   const [result] = await pool.query(
     `
         INSERT INTO attendance (student_id,class_id,teacher_id,date,status)
@@ -188,7 +208,7 @@ export async function createAttendance(student_id, class_id, teacher_id, date, s
         `,
     [student_id, class_id, teacher_id, date, status]
   );
-  return await getAttendance(result.insertId)
+  return await getAttendance(result.insertId);
 }
 
 //deletes a teacher's class
@@ -200,7 +220,7 @@ export async function deleteClass(class_id) {
     `,
     [class_id]
   );
-  return result
+  return result;
 }
 
 //deletes a student record
@@ -212,10 +232,10 @@ export async function deleteStudent(student_id) {
     `,
     [student_id]
   );
-  return result
+  return result;
 }
 
-//deletes all of the students in a specific class 
+//deletes all of the students in a specific class
 export async function deleteStudentsInClass(class_id) {
   const [result] = await pool.query(
     `
@@ -224,5 +244,5 @@ export async function deleteStudentsInClass(class_id) {
     `,
     [class_id]
   );
-  return result
+  return result;
 }

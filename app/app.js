@@ -66,6 +66,15 @@ app.get("/read/attendance/:classID", async (req, res) => {
   res.send(attendance);
 });
 
+//get class attendance for specified date 
+//returns attendance records JOINED with student info
+app.get("/read/attendance/list/:classID/:date", async (req,res) => {
+  const classID = req.params.classID;
+  const date = req.params.date;
+  const attendance = await db.getClassAttendanceDate(classID, date);
+  res.send(attendance);
+})
+
 //create a teacher
 app.post("/create/teacher", async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
@@ -116,9 +125,9 @@ app.delete("/delete/class/:classId", async (req,res) => {
 });
 
 // dev only
-app.listen(8080, () => {
-  console.log("Server is running on port 8080");
-});
+// app.listen(8080, () => {
+//   console.log("Server is running on port 8080");
+// });
 
 //for lambda aws hosting
-// export const handler = serverless(app)
+export const handler = serverless(app)
